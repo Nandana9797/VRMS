@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fullscreen background with a vehicle image */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('https://www.example.com/vehicle-image.jpg'); /* Replace with your vehicle image URL */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for the login form */
+.login-container {
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+    border-radius: 10px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Content inside the login form */
+.login-content {
+    color: #fff;
+    text-align: center;
+}
+
+/* Header style */
+h1 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Form input styles */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background: #fff;
+}
+
+/* Button style */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background: #f04e23;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: #e43d16;
+}

@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #005f73;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+}
+
+header .container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+header i {
+    font-size: 40px; /* Adjust size of icon */
+    color: #ffffff;  /* Set the icon color */
+}
+
+main {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.notes-list {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notes-list h2 {
+    font-size: 28px;
+    color: #005f73;
+    margin-bottom: 15px;
+}
+
+.notes-list p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.note-card {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.note-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.note-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.note-title {
+    font-size: 20px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.note-title:hover {
+    color: #0077b6;
+}
+
+.note-date {
+    font-size: 14px;
+    color: #888;
+}
+
+.btn-view {
+    background-color: #0077b6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-view:hover {
+    background-color: #005f73;
+}
+
+footer {
+    background-color: #005f73;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+}
+
+footer .container {
+    width: 80%;
+    margin: 0 auto;
+}
+
