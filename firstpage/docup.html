@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Vehicle Documents</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .input-group label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="title">Upload Vehicle Documents</div>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="input-group">
+                <label for="insurance">Insurance Certificate</label>
+                <input type="file" name="insurance">
+            </div>
+            <div class="input-group">
+                <label for="pollution">Pollution Certificate</label>
+                <input type="file" name="pollution">
+            </div>
+            <div class="input-group">
+                <label for="rc">Vehicle RC (Registration Certificate)</label>
+                <input type="file" name="rc">
+            </div>
+            <div class="input-group">
+                <label for="license">Driving License</label>
+                <input type="file" name="license">
+            </div>
+            <button type="button" class="btn" onclick="uploadFiles()">Upload Documents</button>
+        </form>
+    </div>
+
+    <script>
+        function uploadFiles() {
+            const formData = new FormData(document.getElementById("uploadForm"));
+    
+            fetch("http://localhost:3000/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>

@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Login</title>
     <link rel="stylesheet" href="signin.css">
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                // Check if the response is ok
+                if (response.ok) {
+                    // Redirect to vrms.html on successful login
+                    window.location.href = 'vrms.html';
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message); // Show error message
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("An error occurred during login. Please try again.");
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -12,19 +43,20 @@
         <div class="login-content">
             <h1>Sign in to Your Account!</h1>
             <h3>Welcome to Vehicle Renewal System</h3>
-            <form action="#" method="POST">
+            <form onsubmit="handleLogin(event)">
                 <div class="input-group">
-                    <label for="mobile"></label>
-                    <input type="text" id="mobile" name="mobile" placeholder="Please Enter the mobile no" required>
-
+                    <label for="email"></label>
+                    <input type="email" id="email" name="email" placeholder="Please Enter your email" required>
                 </div>
-                <button type="submit" class="btn-login" >Generate MPIN</button>
+                <div class="input-group">
+                    <label for="password"></label>
+                    <input type="password" id="password" name="password" placeholder="Please Enter your password" required>
+                </div>
+                <button type="submit" class="btn-login">Sign In</button>
                 
                 <div class="signup">
                     <p>Don't have an account? <a href="register.html">Sign up</a></p>
-                  </div>
-              
-
+                </div>
             </form>
         </div>
     </div>

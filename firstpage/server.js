@@ -3,12 +3,27 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const multer = require("multer"); // Import multer for file uploads
+
+
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Specify the uploads directory
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); // Use the original file name
+    }
+});
+const upload = multer({ storage: storage });
+
 // Middleware
 app.use(cors()); // Allow frontend to communicate with backend
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,8 +40,20 @@ const User = mongoose.model("User", new mongoose.Schema({
     password: String
 }));
 
-// User registration endpoint
+
+
+app.post("/upload", upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+    }
+    res.status(200).json({ message: "File uploaded successfully", file: req.file });
+});
+
+// User Registration Endpoint
+
 app.post("/register", async (req, res) => {
+    console.log("Registration request received:", req.body);
+
     try {
         const { fullName, phoneNumber, email, password } = req.body;
 
@@ -43,14 +70,16 @@ app.post("/register", async (req, res) => {
         const newUser = new User({ fullName, phoneNumber, email, password: hashedPassword });
         await newUser.save();
 
-        res.status(201).json({ message: "User registered successfully", redirect: "/signin.html" });
+        res.status(201).json({ message: "User registered successfully", redirect: "/firstpage/signin.html" });
+        console.log("User registered successfully:", newUser);
+
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ message: "Error registering user" });
     }
 });
 
-// User login endpoint
+// User Login Endpoint
 app.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -69,6 +98,15 @@ app.post("/login", async (req, res) => {
         console.error("Error:", error);
         res.status(500).json({ message: "Error logging in" });
     }
+});
+
+// Serve Static Files
+app.use(express.static('firstpage')); 
+app.use("/uploads", express.static("uploads")); // Serve uploaded files statically
+
+// Serve signin.html
+app.get("/signin.html", (req, res) => {
+    res.sendFile(__dirname + "/firstpage/signin.html");
 });
 
 // Start the server
