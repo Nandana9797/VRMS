@@ -252,15 +252,6 @@
     }
   }
   
-  
-
-
-
-
-
-
-
-
 
  /* Add to your h5.css */
 .sidebar-logo {
@@ -298,3 +289,145 @@
   .profile-info p {
     margin: 5px 0;
   } 
+
+
+  /* Main content styles (specific to this page) */
+.main-content {
+  margin-left: 250px; /* Keeps space for sidebar */
+  padding: 40px; /* Increased padding for a better layout */
+  width: calc(100% - 250px);
+  background-color: #ffffff; /* White background for the main content */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for separation */
+  border-radius: 8px; /* Slight rounding of corners */
+  margin-top: 20px; /* Space from top */
+}
+
+.main-content h1 {
+  font-size: 32px; /* Larger font size for the main title */
+  color: #16a085; /* Consistent color with sidebar */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+.main-content ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+}
+
+.main-content ul li {
+  background-color: #ecf0f1; /* Light background for list items */
+  padding: 15px;
+  margin-bottom: 10px; /* Space between items */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for list items */
+}
+
+.main-content ul li:hover {
+  background-color: #dfe6e9; /* Highlight list items on hover */
+  cursor: pointer;
+}
+
+.main-content button {
+  background-color: #16a085; /* Same color as sidebar */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.main-content button:hover {
+  background-color: #1abc9c; /* Darker shade for hover effect */
+}
+
+/* Enhanced Reminders Section */
+.reminders {
+  margin-top: 40px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reminders h2 {
+  font-size: 24px;
+  color: #16a085;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.reminder-list {
+  margin-top: 15px;
+}
+
+.reminder-card {
+  display: flex;
+  background-color: #ecf0f1;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  align-items: flex-start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reminder-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reminder-card span.material-icons {
+  font-size: 30px;
+  margin-right: 20px;
+  padding-top: 5px;
+}
+
+.reminder-info {
+  flex: 1;
+}
+
+.reminder-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.reminder-info h3 a {
+  text-decoration: none;
+}
+
+.reminder-info h3 a:hover {
+  text-decoration: underline;
+}
+
+.reminder-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Mobile responsiveness for reminders section */
+@media (max-width: 768px) {
+  .reminder-card {
+    flex-direction: column;
+  }
+  
+  .reminder-card span.material-icons {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+}
+.calendar-btn {
+  background-color: #4285F4;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-btn:hover {
+  background-color: #357ae8;
+}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,196 +13,85 @@
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #16a085, #1abc9c);
         }
-
         .profile-card {
             background: #fff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(22, 160, 133, 0.2);
             width: 450px;
             text-align: center;
-            position: relative;
         }
-
-        .profile-img-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-            cursor: pointer;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: #007bff;
-            border: 5px solid #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+        h1 {
+            color: #16a085;
+            margin-bottom: 30px;
+            font-weight: 600;
         }
-
-        .profile-img-container:hover {
-            transform: scale(1.1);
-        }
-
-        .profile-img-container input[type="file"] {
-            display: none;
-        }
-
-        .profile-icon {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .upload-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 30px;
-        }
-
-        .profile-img-container:hover .upload-overlay {
-            display: block;
-        }
-
         .info-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            border-bottom: 1px solid #e0f2f1;
+            transition: all 0.3s ease;
         }
-
+        .info-row:hover {
+            background-color: #e0f2f1;
+            border-radius: 8px;
+        }
         .label {
-            font-weight: bold;
-            color: #333;
+            font-weight: 500;
+            color: #16a085;
         }
-
         .value {
-            color: #555;
+            color: #444;
         }
-
-        .input-field {
+        .profile-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 8px;
-            border: 2px solid #007bff;
-            border-radius: 5px;
-            display: none;
+            height: 5px;
+            background: #16a085;
         }
-
-        .btn {
-            padding: 12px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .edit-btn {
-            background: #007bff;
-            color: white;
-        }
-
-        .save-btn {
-            background: #28a745;
-            color: white;
-            display: none;
-        }
-
-        .btn:hover {
-            opacity: 0.8;
-        }
-
     </style>
 </head>
 <body>
-
 <div class="profile-card">
-    <div class="profile-img-container" onclick="uploadImage()">
-        <img src="user-icon.png" alt="" id="profileImage" class="profile-icon">
-        <div class="upload-overlay material-icons">photo_camera</div>
-        <input type="file" id="imageUpload" accept="image/*">
-    </div>
-
-    <div class="info-container">
-        <div class="info-row">
-            <span class="label">Name:</span>
-            <span class="value" id="nameDisplay">John Doe</span>
-            <input type="text" id="nameInput" class="input-field" value="John Doe">
-        </div>
-
-        <div class="info-row">
-            <span class="label">Phone:</span>
-            <span class="value" id="phoneDisplay">+1234567890</span>
-            <input type="text" id="phoneInput" class="input-field" value="+1234567890">
-        </div>
-
-        <div class="info-row">
-            <span class="label">Email:</span>
-            <span class="value" id="emailDisplay">johndoe@example.com</span>
-            <input type="email" id="emailInput" class="input-field" value="johndoe@example.com">
-        </div>
-    </div>
-
-    <button class="btn edit-btn" onclick="editProfile()">Edit Profile</button>
-    <button class="btn save-btn" onclick="saveProfile()">Save Changes</button>
+    <h1>User Profile</h1>
+    <div class="info-container" id="userDetails"></div>
 </div>
-
 <script>
-    function editProfile() {
-        document.querySelectorAll(".value").forEach(el => el.style.display = "none");
-        document.querySelectorAll(".input-field").forEach(el => el.style.display = "block");
-
-        document.querySelector(".edit-btn").style.display = "none";
-        document.querySelector(".save-btn").style.display = "block";
+    // Retrieve the user's details from local storage
+    const userName = localStorage.getItem('userName');
+    const userPhone = localStorage.getItem('userPhone');
+    const userEmail = localStorage.getItem('userEmail');
+    const userDetailsDiv = document.getElementById('userDetails');
+    if (userName) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Name:</span> <span class="value">${userName}</span></div>`;
     }
-
-    function saveProfile() {
-        document.getElementById("nameDisplay").textContent = document.getElementById("nameInput").value;
-        document.getElementById("phoneDisplay").textContent = document.getElementById("phoneInput").value;
-        document.getElementById("emailDisplay").textContent = document.getElementById("emailInput").value;
-
-        document.querySelectorAll(".value").forEach(el => el.style.display = "block");
-        document.querySelectorAll(".input-field").forEach(el => el.style.display = "none");
-
-        document.querySelector(".edit-btn").style.display = "block";
-        document.querySelector(".save-btn").style.display = "none";
+    if (userPhone) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Phone Number:</span> <span class="value">${userPhone}</span></div>`;
     }
-
-    function uploadImage() {
-        document.getElementById("imageUpload").click();
+    if (userEmail) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Email:</span> <span class="value">${userEmail}</span></div>`;
     }
-
-    document.getElementById("imageUpload").addEventListener("change", function(event) {
-        let reader = new FileReader();
-        reader.onload = function() {
-            document.getElementById("profileImage").src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    });
 </script>
-
 </body>
 </html>
-

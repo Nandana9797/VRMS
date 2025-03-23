@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Documents</title>
+    <link rel="icon" type="image/png" href="vrms.png"> 
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Custom styles for document links */
+        #documentsList a {
+            color: #16a085; /* Change to desired color */
+            text-decoration: none; /* Remove underline */
+        }
+        #documentsList a:hover {
+            text-decoration: underline; /* Optional: underline on hover */
+        }
+    </style>
+    <script>
+
+        async function fetchDocuments() {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:3000/user/documents', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (response.ok) {
+                const documents = await response.json();
+                const documentsList = document.getElementById('documentsList');
+                documents.forEach(doc => {
+                    const validityStatus = new Date(doc.validityDate) > new Date() ? 
+                        `Valid until ${new Date(doc.validityDate).toLocaleDateString()}` : 
+                        `Expired on ${new Date(doc.validityDate).toLocaleDateString()}`;
+
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.textContent = `${doc.document_name}`; // Use document_name
+                    link.href = `http://localhost:3000/${doc.filePath}`; // Link to the document
+                    link.target = "_blank"; // Open in new tab
+                    listItem.appendChild(link);
+
+
+                    const vehicleNumberItem = document.createElement('span');
+                    vehicleNumberItem.textContent = ` Vehicle Number: ${doc.vehicleNumber}`; // Display vehicle number
+                    listItem.appendChild(vehicleNumberItem); // Append vehicle number to the list item
+
+                    const validityItem = document.createElement('span');
+
+                    validityItem.textContent = ` (${validityStatus})`; // Display validity status
+                    listItem.appendChild(validityItem);
+                    documentsList.appendChild(listItem);
+
+                });
+            } else {
+                console.error("Failed to fetch documents:", await response.text());
+                alert("Failed to fetch documents. Please try again.");
+            }
+        }
+
+        window.onload = fetchDocuments; // Fetch documents when the page loads
+    </script>
+</head>
+<body>
+
+     <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src=" https://myrto.in/wp-content/uploads/2019/07/Asset-1-4-300x300.png" alt=" " class="sidebar-logo"> VRMS <!-- Logo added near the name -->
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><span class="material-icons">dashboard</span> Dashboard</a></li>
+        <li><a href="docup.html"><span class="material-icons">event_note</span> Documents</a></li>
+        <li><a href="viewDocuments.html"><span class="material-icons">folder</span> View Documents</a></li>
+        <li><a href="insurance.html"><span class="material-icons">compare_arrows</span> Insurance</a></li>
+        <li><a href="roadsafety.html"><span class="material-icons">info</span> Road Safety</a></li>
+        <li><a href="nearby.html"><span class="material-icons">location_on</span> Near By RTO</a></li>
+        <li><a href="leanerspaltform.html" class="learning-link"><span class="material-icons">school</span> Learner’s Platform</a></li>
+        <li><a href="myprofile.html"><span class="material-icons">person</span> My Profile</a></li>
+      </ul>
+    </nav>
+  </aside>
+    <!-- Main content -->
+    <div class="main-content">
+        <h1>Your Uploaded Documents</h1>
+        <ul id="documentsList"></ul>
+        <button onclick="window.location.href='docup.html'">Upload More Documents</button>
+    </div>
+
+</body>
+</html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Renewal Management System</title>
+    <link rel="icon" type="image/png" href="vrms.png"> 
     <style>
         * {
             margin: 0;
@@ -44,10 +45,18 @@
         }
 
         .logo {
-            color: white;
-            font-size: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, #999797);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 35px;
             font-weight: bold;
             text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .logo:hover {
+            color: #e74c3c; /* Change color on hover */
+            transform: scale(1.1); /* Scale up the logo */
         }
 
         nav ul {
@@ -68,17 +77,32 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)),
-                        url('https://via.placeholder.com/1920x1080') center/cover;
+            position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
             text-align: center;
             color: white;
             padding-top: 4rem;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
         }
 
         .hero-content {
+            position: relative;
+            z-index: 2;
             max-width: 800px;
             margin: 0 auto;
             padding: 0 2rem;
@@ -214,16 +238,21 @@
                     <li><a href="#features">Features</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    
                 </ul>
             </nav>
         </div>
     </header>
 
     <section class="hero" id="home">
+        <video autoplay loop muted>
+            <source src="vrms - Trim.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="hero-content">
             <h1>Vehicle Renewal Management System</h1>
             <p>Simplifying vehicle document management and renewals for a safer driving experience</p>
-            <a href="home.html" class="btn">Get Started</a>
+            <a href="signin.html" class="btn">Get Started</a>
         </div>
     </section>
 
@@ -253,8 +282,6 @@
             <h2>Ready to Simplify Your Vehicle Management?</h2>
             <p>Join thousands of users who trust VRMS for their vehicle document management</p>
             <a href="#" class="btn">Sign Up Now </a>
-
-           
         </div>
     </section>
 
@@ -282,17 +309,12 @@
                     <li><a href="#">Help Center</a></li>
                     <li><a href="#">Contact Us</a></li>
                     <li><a href="#">FAQs</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
                     <li><a href="#">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
     </footer>
+   
 </body>
 </html>

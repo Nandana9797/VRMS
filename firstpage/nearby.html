@@ -3,140 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTO & Pollution Testing Locator</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Find Nearby RTOs</title>
+    <link rel="icon" type="image/png" href="vrms.png"> 
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px 0;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #3e5771;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .sidebar-menu {
+            margin-top: 20px;
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            padding: 10px 20px;
+            transition: 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu li.active {
+            background-color: #34495e;
+            border-left: 4px solid #3498db;
+        }
+
+        .sidebar-menu li:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            transition: all 0.3s;
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #location {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        #location:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .results-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .results-container h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #rtoList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rto-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .rto-item:hover {
+            background: #f5f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .rto-item h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .rto-item p {
+            margin: 5px 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .rto-item .distance {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        /* Toggle button for mobile */
+        .toggle-sidebar {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .toggle-sidebar {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+        }
+        .sidebar {
+    background-color: #1abc9c;
+    width: 250px;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+  
+  .sidebar nav ul {
+    list-style-type: none;
+    width: 100%;
+  }
+  
+  .sidebar nav ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar nav ul li a:hover,
+  .sidebar nav ul li a.active {
+    background-color: #16a085;
+  }
+  
+  .sidebar nav ul li a .material-icons {
+    margin-right: 10px;
+  }
+  
+    </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-blue-600 p-4">
-        <div class="container mx-auto">
-            <h1 class="text-white text-2xl font-bold">Nearby RTO & Pollution Testing Centers</h1>
-        </div>
+<body>
+    <!-- Toggle button for mobile -->
+    <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src=" https://myrto.in/wp-content/uploads/2019/07/Asset-1-4-300x300.png" height="30px" width="30px" alt=" " class="sidebar-logo"> VRMS <!-- Logo added near the name -->
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><span class="material-icons">dashboard</span> Dashboard</a></li>
+        <li><a href="docup.html"><span class="material-icons">event_note</span> Documents</a></li>
+        <li><a href="viewDocuments.html"><span class="material-icons">folder</span> View Documents</a></li>
+        <li><a href="insurance.html"><span class="material-icons">compare_arrows</span> Insurance</a></li>
+        <li><a href="roadsafety.html"><span class="material-icons">info</span> Road Safety</a></li>
+        <li><a href="nearby.html"><span class="material-icons">location_on</span> Near By RTO</a></li>
+        <li><a href="leanerspaltform.html" class="learning-link"><span class="material-icons">school</span> Learner’s Platform</a></li>
+        <li><a href="myprofile.html"><span class="material-icons">person</span> My Profile</a></li>
+      </ul>
     </nav>
+  </aside>
 
-    <main class="container mx-auto p-4">
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="mb-6">
-                <label for="location" class="block text-gray-700 font-semibold mb-2">Enter your location:</label>
-                <div class="flex gap-4">
-                    <input type="text" id="location" class="flex-1 p-2 border rounded-md" placeholder="Enter city or area name">
-                    <button onclick="getLocation()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                        Use Current Location
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex gap-4 mb-6">
-                <button onclick="searchNearby('rto')" class="flex-1 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-                    Find RTO Offices
-                </button>
-                <button onclick="searchNearby('pollution')" class="flex-1 bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600">
-                    Find Pollution Testing Centers
-                </button>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h2>Search for RTO Offices</h2>
+            <div class="search-container">
+                <input type="text" id="location" placeholder="Enter city, area or pincode">
+                <button onclick="searchRTO()"><i class="fas fa-search"></i> Find RTO</button>
             </div>
         </div>
 
-        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Results will be dynamically inserted here -->
+        <div id="map"></div>
+        
+        <div class="results-container">
+            <h3><i class="fas fa-building"></i> Nearby RTO Offices</h3>
+            <ul id="rtoList"></ul>
         </div>
     </main>
 
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        // Handle success
-                        alert('Location accessed successfully! Latitude: ' +
-                              position.coords.latitude + ' Longitude: ' +
-                              position.coords.longitude);
-                        //In a real application you'd use a reverse geocoding service
-                        //to turn these coordinates into a city/area name.
-                    },
-                    (error) => {
-                        // Handle error
-                        alert('Error accessing location: ' + error.message);
-                    }
-                );
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
-        }
+    <script src="rtoscript.js"></script>
+    <script >
+        // Toggle sidebar on mobile
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
 
-        async function searchNearby(type) {
+        // Initialize map (placeholder for your existing map code)
+        var map = L.map('map').setView([20.5937, 78.9629], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Placeholder function for your existing code
+        function searchRTO() {
+            // This would be replaced by your actual implementation
             const location = document.getElementById('location').value;
-            if (!location) {
-                alert('Please enter a location or use current location');
+            if (location.trim() === '') {
+                alert('Please enter a location to search');
                 return;
             }
-
-            try {
-                let response;
-                if (type === 'rto') {
-                    response = await axios.get(`http://localhost:5000/api/rto?location=${location}`);
-                } else if (type === 'pollution') {
-                    response = await axios.get(`http://localhost:5000/api/pollution?location=${location}`);
-                }
-
-                displayResults(response.data, type);
-
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                alert('Error fetching data.  Check the console for details.');
-            }
+            
+            // Mock data for demonstration
+            const mockRTOs = [
+                { name: 'RTO Office Central', address: '123 Main St, Central Area', distance: '1.2 km', coords: [20.5937, 78.9629] },
+                { name: 'RTO Regional Center', address: '456 Park Road, North Area', distance: '3.5 km', coords: [20.6037, 78.9729] },
+                { name: 'Transport Department Office', address: '789 East Boulevard', distance: '5.8 km', coords: [20.5837, 78.9829] }
+            ];
+            
+            displayRTOs(mockRTOs);
         }
 
-        function displayResults(results, type) {
-            const resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = ''; // Clear previous results
-
-            if (results.length === 0) {
-                resultsContainer.innerHTML = '<p class="text-gray-500">No results found.</p>';
+        function displayRTOs(rtos) {
+            const rtoList = document.getElementById('rtoList');
+            rtoList.innerHTML = '';
+            
+            // Clear existing markers (assuming markers are stored in a global array)
+            // if (markers) markers.forEach(marker => map.removeLayer(marker));
+            
+            if (rtos.length === 0) {
+                rtoList.innerHTML = '<li class="rto-item">No RTO offices found in this area</li>';
                 return;
             }
-
-            results.forEach(item => {
-                const resultDiv = document.createElement('div');
-                resultDiv.className = 'bg-white p-4 rounded-lg shadow-md';
-
-                const title = document.createElement('h3');
-                title.className = 'font-bold text-lg mb-2';
-                title.textContent = item.name;
-
-                const address = document.createElement('p');
-                address.className = 'text-gray-600 mb-2';
-                address.textContent = item.address;
-
-                const hours = document.createElement('p');
-                hours.className = 'text-gray-600 mb-2';
-                hours.textContent = `⏰ ${item.hours}`;
-
-                const phone = document.createElement('p');
-                phone.className = 'text-gray-600 mb-2';
-                phone.textContent = `📞 ${item.phone}`;
-
-                const buttonsDiv = document.createElement('div');
-                buttonsDiv.className = 'flex gap-2';
-
-                const directionsButton = document.createElement('button');
-                directionsButton.className = 'bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 text-sm';
-                directionsButton.textContent = 'Get Directions';
-
-                const moreInfoButton = document.createElement('button');
-                moreInfoButton.className = 'bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 text-sm';
-                moreInfoButton.textContent = 'More Info';
-
-                buttonsDiv.appendChild(directionsButton);
-                buttonsDiv.appendChild(moreInfoButton);
-
-                resultDiv.appendChild(title);
-                resultDiv.appendChild(address);
-                resultDiv.appendChild(hours);
-                resultDiv.appendChild(phone);
-                resultDiv.appendChild(buttonsDiv);
-
-                resultsContainer.appendChild(resultDiv);
+            
+            rtos.forEach(rto => {
+                const li = document.createElement('li');
+                li.className = 'rto-item';
+                li.innerHTML = `
+                    <h4>${rto.name}</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> ${rto.address}</p>
+                    <p class="distance"><i class="fas fa-road"></i> ${rto.distance}</p>
+                `;
+                li.addEventListener('click', () => {
+                    map.setView(rto.coords, 14);
+                    // Add marker or highlight existing marker
+                });
+                rtoList.appendChild(li);
+                
+                // Add marker to map
+                L.marker(rto.coords)
+                    .addTo(map)
+                    .bindPopup(`<b>${rto.name}</b><br>${rto.address}`);
             });
+            
+            // Adjust map view to show all markers
+            if (rtos.length > 0) {
+                map.setView(rtos[0].coords, 12);
+            }
         }
     </script>
 </body>
