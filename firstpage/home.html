@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Renewal Management System</title>
+  <link rel="icon" type="image/png" href="vrms.png"> 
+  <link rel="stylesheet" href="home.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src=" https://myrto.in/wp-content/uploads/2019/07/Asset-1-4-300x300.png" alt=" " class="sidebar-logo"> VRMS <!-- Logo added near the name -->
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><span class="material-icons">dashboard</span> Dashboard</a></li>
+        <li><a href="docup.html"><span class="material-icons">event_note</span> Documents</a></li>
+        <li><a href="viewDocuments.html"><span class="material-icons">folder</span> View Documents</a></li>
+        <li><a href="insurance.html"><span class="material-icons">compare_arrows</span> Insurance</a></li>
+        <li><a href="roadsafety.html"><span class="material-icons">info</span> Road Safety</a></li>
+        <li><a href="nearby.html"><span class="material-icons">location_on</span> Near By RTO</a></li>
+        <li><a href="leanerspaltform.html" class="learning-link"><span class="material-icons">school</span> Learner’s Platform</a></li>
+        <li><a href="myprofile.html"><span class="material-icons">person</span> My Profile</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">        
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.logout-btn').addEventListener('click', function() {
+              localStorage.clear();
+              window.location.href = 'signin.html';
+            });
+          });
+        </script>
+
+
+        <span id="welcome-message">Welcome, User</span>
+        <script>
+          console.log("Fetching documents...");
+          document.addEventListener('DOMContentLoaded', function() {
+            const userName = localStorage.getItem('userName'); // Assuming the user's name is stored under 'userName'
+            if (userName) {
+              document.getElementById('welcome-message').textContent = `Welcome, ${userName}`;
+            }
+          });
+        </script>
+
+        <br>
+        <button class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard">
+      <h1>Welcome to Your Webpage </h1>
+
+      <!-- Profile Section -->
+      <section class="profile-section">
+        <div class="profile-card">
+          <img src="https://img.freepik.com/free-vector/people-with-icons-related-car-insurance_53876-43023.jpg   " alt="User Profile Picture" class="profile-img"> <!-- Profile Image -->
+          <div class="profile-info">
+            <h3>VRMS</h3>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Grid -->
+      <div class="feature-grid">
+        <div class="feature">
+          <span class="material-icons">notifications</span>
+          <h3>Renewal Notifications</h3>
+          <p>Set reminders for upcoming document expirations.</p>
+        </div>
+        <div class="feature">
+          <span class="material-icons">storage</span>
+          <h3>Document Storage</h3>
+          <p>Store all your vehicle-related documents securely.</p>
+        </div>
+        <div class="feature">
+          <span class="material-icons">compare_arrows</span>
+          <h3>Insurance Comparison</h3>
+          <p>Compare the best insurance plans for your vehicle.</p>
+        </div>
+      </div>
+
+    <!-- Expiration Reminders Section -->
+<section class="reminders">
+  <h2>Upcoming Expirations</h2>
+  <div class="reminder-list">
+    <ul id="documentsList"></ul>
+    <div id="reminders-container"></div>
+  </div>
+  <script>
+   async function fetchDocuments() {
+  const token = localStorage.getItem('token');
+  const response = await fetch('http://localhost:3000/user/documents', {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
+
+  if (response.ok) {
+    const documents = await response.json();
+    const documentsList = document.getElementById('documentsList');
+    documentsList.innerHTML = ''; // Clear existing list
+
+    if (documents.length === 0) {
+      const emptyMessage = document.createElement('div');
+      emptyMessage.className = 'reminder-card';
+      emptyMessage.innerHTML = '<span class="material-icons">info</span><div class="reminder-info">No documents found</div>';
+      documentsList.appendChild(emptyMessage);
+    } else {
+      documents.forEach(doc => {
+        const today = new Date();
+        const expirationDate = new Date(doc.validityDate);
+        const timeDiff = expirationDate - today;
+        const daysToExpire = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        // Create reminder card
+        const reminderCard = document.createElement('div');
+        reminderCard.className = 'reminder-card';
+
+        // Add icon based on expiration status
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'material-icons';
+
+        if (daysToExpire <= 0) {
+          iconSpan.textContent = 'warning';
+          iconSpan.style.color = '#e74c3c'; // Red for expired
+        } else if (daysToExpire <= 5) {
+          iconSpan.textContent = 'access_time';
+          iconSpan.style.color = '#f39c12'; // Orange for expiring soon
+        } else {
+          iconSpan.textContent = 'check_circle';
+          iconSpan.style.color = '#16a085'; // Green for valid
+        }
+
+        reminderCard.appendChild(iconSpan);
+
+        // Create reminder info container
+        const reminderInfo = document.createElement('div');
+        reminderInfo.className = 'reminder-info';
+
+        // Add document name with link
+        const docName = document.createElement('h3');
+        const link = document.createElement('a');
+        link.textContent = doc.document_name;
+        link.href = `http://localhost:3000/${doc.filePath}`;
+        link.target = "_blank";
+        link.style.color = '#16a085';
+        docName.appendChild(link);
+        reminderInfo.appendChild(docName);
+
+        // Add vehicle number
+        const vehicleNumber = document.createElement('p');
+        vehicleNumber.textContent = doc.vehicleNumber ? `Vehicle Number: ${doc.vehicleNumber}` : 'Vehicle Number: Not available';
+        reminderInfo.appendChild(vehicleNumber);
+
+        // Add expiration status
+        const statusText = document.createElement('p');
+        if (daysToExpire <= 0) {
+          statusText.textContent = 'Expired';
+          statusText.style.color = '#e74c3c';
+          statusText.style.fontWeight = 'bold';
+        } else if (daysToExpire <= 5) {
+          statusText.textContent = `Expires in ${daysToExpire} days`;
+          statusText.style.color = '#f39c12';
+          statusText.style.fontWeight = 'bold';
+        } else {
+          statusText.textContent = `Valid until ${expirationDate.toLocaleDateString()}`;
+          statusText.style.color = '#16a085';
+        }
+        reminderInfo.appendChild(statusText);
+
+        // Add Google Calendar Button
+        const calendarButton = document.createElement('button');
+        calendarButton.textContent = 'Add Reminder to Calendar';
+        calendarButton.className = 'calendar-btn';
+        calendarButton.addEventListener('click', () => addEventToGoogleCalendar(doc.document_name, expirationDate));
+
+        reminderInfo.appendChild(calendarButton);
+        reminderCard.appendChild(reminderInfo);
+        documentsList.appendChild(reminderCard);
+      });
+    }
+  } else {
+    console.error("Failed to fetch documents:", await response.text());
+    const errorCard = document.createElement('div');
+    errorCard.className = 'reminder-card';
+    errorCard.innerHTML = '<span class="material-icons" style="color: #e74c3c;">error</span><div class="reminder-info">Failed to fetch documents. Please try again.</div>';
+    document.getElementById('documentsList').appendChild(errorCard);
+  }
+}
+
+// Function to add event to Google Calendar
+function addEventToGoogleCalendar(docName, expirationDate) {
+  const formattedDate = expirationDate.toISOString().replace(/-|:|\.\d+/g, ""); // Convert date to Google Calendar format
+  const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(docName)}+Expiration&dates=${formattedDate}/${formattedDate}&details=This+is+a+reminder+for+your+document+expiration.&location=&sf=true&output=xml`;
+
+  window.open(googleCalendarUrl, '_blank');
+}
+
+window.onload = fetchDocuments;
+
+
+  </script>
+</section>
+  
+      
+      </section>
+       <!-- Learner's Learning Platform Section -->
+      <section class="learners">
+        <h2>Learner's Learning Platform</h2>
+  
+        <div class="learning-grid">
+          <div class="learning-item">
+            <span class="material-icons">library_books</span>
+            <h3>Driving Learning Notes</h3>
+            <a href="#">Download Notes</a>
+          </div>
+          <div class="learning-item">
+            <span class="material-icons">play_arrow</span>
+            <h3>YouTube Driving Lessons</h3>
+            <ul>
+              <li><a href="https://www.youtube.com/watch?v=someVideoLink" target="_blank">Lesson 1: Basics</a></li>
+              <li><a href="https://www.youtube.com/watch?v=anotherVideoLink" target="_blank">Lesson 2: Parking</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+ 
+</body>
+</html>

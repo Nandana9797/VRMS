@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+        }
+        .profile-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(22, 160, 133, 0.2);
+            width: 450px;
+            text-align: center;
+        }
+        h1 {
+            color: #16a085;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0f2f1;
+            transition: all 0.3s ease;
+        }
+        .info-row:hover {
+            background-color: #e0f2f1;
+            border-radius: 8px;
+        }
+        .label {
+            font-weight: 500;
+            color: #16a085;
+        }
+        .value {
+            color: #444;
+        }
+        .profile-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #16a085;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-card">
+    <h1>User Profile</h1>
+    <div class="info-container" id="userDetails"></div>
+</div>
+<script>
+    // Retrieve the user's details from local storage
+    const userName = localStorage.getItem('userName');
+    const userPhone = localStorage.getItem('userPhone');
+    const userEmail = localStorage.getItem('userEmail');
+    const userDetailsDiv = document.getElementById('userDetails');
+    if (userName) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Name:</span> <span class="value">${userName}</span></div>`;
+    }
+    if (userPhone) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Phone Number:</span> <span class="value">${userPhone}</span></div>`;
+    }
+    if (userEmail) {
+        userDetailsDiv.innerHTML += `<div class="info-row"><span class="label">Email:</span> <span class="value">${userEmail}</span></div>`;
+    }
+</script>
+</body>
+</html>

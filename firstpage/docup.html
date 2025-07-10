@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Vehicle Documents</title>
+    <link rel="icon" type="image/png" href="vrms.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #16a085;
+            --primary-dark: #279856;
+            --secondary-color: #a7f4ce;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --success-color: #28a745;
+            --success-hover: #218838;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            transition: transform 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .document-section {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .document-section:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .document-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .document-title {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .file-upload input[type="file"] {
+            padding: 8px;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload input[type="file"]:hover {
+            border-color: var(--primary-color);
+        }
+
+        .date-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .date-input label {
+            width: 120px;
+            font-size: 13px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+        }
+
+        .btn {
+            background-color: var(--success-color);
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--success-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .document-section {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="header">
+            <div class="title">Upload Vehicle Documents</div>
+            <div class="subtitle">Please upload all required documents for verification</div>
+        </div>
+
+        <form id="uploadForm" enctype="multipart/form-data" onsubmit="uploadFiles(); return false;">
+            <div class="input-group">
+                <div class="input-group-header">
+                    <label for="vehicleNumber">Vehicle Number</label>
+                </div>
+                <input type="text" name="vehicleNumber" placeholder="Enter vehicle registration number" required>
+            </div>
+
+            <div class="document-section">
+                <div class="document-header">
+                    <i class="fas fa-shield-alt document-icon"></i>
+                    <div class="document-title">Insurance Certificate</div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" name="insurance">
+                </div>
+                <div class="date-input">
+                    <label for="validityInsurance">Validity Date:</label>
+                    <input type="date" name="validityInsurance">
+                </div>
+            </div>
+
+            <div class="document-section">
+                <div class="document-header">
+                    <i class="fas fa-leaf document-icon"></i>
+                    <div class="document-title">Pollution Certificate</div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" name="pollution">
+                </div>
+                <div class="date-input">
+                    <label for="validityPollution">Validity Date:</label>
+                    <input type="date" name="validityPollution">
+                </div>
+            </div>
+
+            <div class="document-section">
+                <div class="document-header">
+                    <i class="fas fa-file-alt document-icon"></i>
+                    <div class="document-title">Vehicle RC (Registration Certificate)</div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" name="rc">
+                </div>
+                <div class="date-input">
+                    <label for="validityRC">Validity Date:</label>
+                    <input type="date" name="validityRC">
+                </div>
+            </div>
+
+            <div class="document-section">
+                <div class="document-header">
+                    <i class="fas fa-id-card document-icon"></i>
+                    <div class="document-title">Driving License</div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" name="license">
+                </div>
+                <div class="date-input">
+                    <label for="validityLicense">Validity Date:</label>
+                    <input type="date" name="validityLicense">
+                </div>
+            </div>
+
+            <button type="submit" class="btn" style="margin-bottom: 20px;">
+
+                <i class="fas fa-upload"></i> Upload Documents
+            </button>
+        </form>
+        <a href="viewDocuments.html" class="btn" style="margin-top: 20px;">
+            <i class="fas fa-eye"></i> View Uploaded Documents
+        </a>
+
+    </div>
+
+    <script>
+        function uploadFiles() {
+            const form = document.getElementById("uploadForm");
+            const formData = new FormData(form);
+
+            fetch("http://localhost:3000/upload", {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to upload documents. Please try again.");
+            });
+        }
+    </script>
+</body>
+</html>

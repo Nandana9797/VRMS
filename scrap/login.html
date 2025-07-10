@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Login</title>
+    <link rel="stylesheet" href="login.css"> 
+    <script>
+        function redirectToNextPage(event) {
+            event.preventDefault(); // Prevents the form from submitting
+            // Redirects to the next page after login, change 'nextpage.html' to your target URL
+            window.location.href = 'home.html';
+        }
+    </script>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-content">
+            <h1>Login</h1>
+<form id="loginForm" action="/login" method="POST">
+
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+               
+                <button id="button" type="submit" class="btn-login" onclick="redirectToNextPage(event)">Login</button>
+                
+                <div class="signup">
+                    <p>Don't have an account? <a href="register.html">Sign up</a></p>
+                </div>
+                <div class="forgot-password">
+                    <a href="forgotpass.html">Forgot Password?</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

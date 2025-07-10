@@ -1,0 +1,433 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body and Font */
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sidebar {
+    background-color: #1abc9c;
+    width: 250px;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+  
+  .sidebar nav ul {
+    list-style-type: none;
+    width: 100%;
+  }
+  
+  .sidebar nav ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar nav ul li a:hover,
+  .sidebar nav ul li a.active {
+    background-color: #16a085;
+  }
+  
+  .sidebar nav ul li a .material-icons {
+    margin-right: 10px;
+  }
+  
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+  }
+  
+  .header {
+    background-color: #16a085;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-container {
+    font-size: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #16a085;
+    position: relative; /* Ensures child absolute elements are positioned correctly */
+}
+
+.logout-btn {
+  background-color: #3cb7e7;
+  color: white;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.logout-btn:hover {
+    background-color: #2b96c0;
+}
+
+  
+  /* Dashboard Section */
+  .dashboard h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .feature-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .feature {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature span {
+    font-size: 40px;
+    color: #16a085;
+  }
+  
+  .feature h3 {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+  
+  .feature p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  /* Reminders Section */
+  .reminders {
+    margin-top: 40px;
+  }
+  
+  .reminder-card {
+    display: flex;
+    background-color: #ecf0f1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    align-items: center;
+  }
+  
+  .reminder-card span {
+    font-size: 30px;
+    margin-right: 20px;
+  }
+  
+  .notify-btn {
+    background-color: #2980b9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .notify-btn:hover {
+    background-color: #3498db;
+  }
+  
+  /* Learner's Platform Section */
+  .learners {
+    margin-top: 40px;
+  }
+  
+  .learning-grid {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .learning-item {
+    background-color: white;
+    padding: 20px;
+    width: 45%;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .learning-item h3 {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+  
+  .learning-item a {
+    text-decoration: none;
+    color: #2980b9;
+    margin-top: 10px;
+    display: block;
+  }
+  
+  .learning-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .learning-item span {
+    font-size: 40px;
+    color: #16a085;
+  }
+  
+  /* Footer Section */
+  footer {
+    background-color: #16a085;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .feature-grid {
+      flex-direction: column;
+    }
+  
+    .feature {
+      width: 100%;
+    }
+  
+    .learning-grid {
+      flex-direction: column;
+    }
+  
+    .learning-item {
+      width: 100%;
+    }
+  }
+  
+
+ /* Add to your h5.css */
+.sidebar-logo {
+    width: 30px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .profile-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .profile-info h3 {
+    margin: 0;
+  }
+  
+  .profile-info p {
+    margin: 5px 0;
+  } 
+
+
+  /* Main content styles (specific to this page) */
+.main-content {
+  margin-left: 250px; /* Keeps space for sidebar */
+  padding: 40px; /* Increased padding for a better layout */
+  width: calc(100% - 250px);
+  background-color: #ffffff; /* White background for the main content */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding a shadow for separation */
+  border-radius: 8px; /* Slight rounding of corners */
+  margin-top: 20px; /* Space from top */
+}
+
+.main-content h1 {
+  font-size: 32px; /* Larger font size for the main title */
+  color: #16a085; /* Consistent color with sidebar */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+.main-content ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+}
+
+.main-content ul li {
+  background-color: #ecf0f1; /* Light background for list items */
+  padding: 15px;
+  margin-bottom: 10px; /* Space between items */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for list items */
+}
+
+.main-content ul li:hover {
+  background-color: #dfe6e9; /* Highlight list items on hover */
+  cursor: pointer;
+}
+
+.main-content button {
+  background-color: #16a085; /* Same color as sidebar */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.main-content button:hover {
+  background-color: #1abc9c; /* Darker shade for hover effect */
+}
+
+/* Enhanced Reminders Section */
+.reminders {
+  margin-top: 40px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reminders h2 {
+  font-size: 24px;
+  color: #16a085;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.reminder-list {
+  margin-top: 15px;
+}
+
+.reminder-card {
+  display: flex;
+  background-color: #ecf0f1;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  align-items: flex-start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reminder-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reminder-card span.material-icons {
+  font-size: 30px;
+  margin-right: 20px;
+  padding-top: 5px;
+}
+
+.reminder-info {
+  flex: 1;
+}
+
+.reminder-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.reminder-info h3 a {
+  text-decoration: none;
+}
+
+.reminder-info h3 a:hover {
+  text-decoration: underline;
+}
+
+.reminder-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Mobile responsiveness for reminders section */
+@media (max-width: 768px) {
+  .reminder-card {
+    flex-direction: column;
+  }
+  
+  .reminder-card span.material-icons {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+}
+.calendar-btn {
+  background-color: #4285F4;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-btn:hover {
+  background-color: #357ae8;
+}

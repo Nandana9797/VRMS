@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Document</title>
+</head>
+<body>
+    <h1>Upload Document</h1>
+    <form action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+        <label for="labelName">Label Name:</label>
+        <input type="text" name="labelName" required>
+        <br>
+        <label for="file">Choose file:</label>
+        <input type="file" name="insurance" required>
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
