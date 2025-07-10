@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB connection
-mongoose.connect("mongodb+srv://jectpro932:project@cluster0.d4ywg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("Your_mongodb_url")
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.error("MongoDB connection error:", err));
 
